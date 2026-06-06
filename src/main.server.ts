@@ -1,8 +1,15 @@
 import { BootstrapContext, bootstrapApplication } from '@angular/platform-browser';
-import { App } from './app/app';
+import { enableProdMode } from '@angular/core';
+
+import { AppComponent } from './app/app';
 import { config } from './app/app.config.server';
+import { environment } from './environments/environment';
+
+if (environment.production) {
+  enableProdMode();
+}
 
 const bootstrap = (context: BootstrapContext) =>
-    bootstrapApplication(App, config, context);
+  bootstrapApplication(AppComponent, config, context);
 
 export default bootstrap;

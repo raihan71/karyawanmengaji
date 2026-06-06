@@ -1,0 +1,55 @@
+<div class="max-w-screen-xl mx-auto px-5">
+  <div class="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10">
+    @for (item of items; track $index) {
+    <a
+      [routerLink]="[linkDetail, item?.sys?.id]"
+      class="relative h-72 w-full flex flex-col justify-end bg-cover bg-center rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105"
+      [style.background-image]="
+        item.image ? 'url(' + item.image + ')' : 'url(' + img + ')'
+      "
+    >
+      <!-- Gradient Overlay -->
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"
+      ></div>
+
+      <!-- Top Section: Category and Date -->
+      <div
+        class="absolute top-0 left-0 right-0 flex justify-between items-center p-4"
+      >
+        <span
+          class="text-xs bg-green-600 text-white px-4 py-1 uppercase rounded-full hover:bg-white hover:text-green-600 transition duration-300"
+        >
+          {{ item?.fields?.category }}
+        </span>
+        <div class="text-white text-right">
+          <span
+            class="block text-sm font-semibold"
+            style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8)"
+            >{{ item?.sys?.createdAt | date : "YYYY" }}</span
+          >
+          <span
+            class="block text-2xl font-bold"
+            style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8)"
+            >{{ item?.sys?.createdAt | date : "dd" }}</span
+          >
+          <span
+            class="block text-sm"
+            style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8)"
+            >{{ item?.sys?.createdAt | date : "LLL" }}</span
+          >
+        </div>
+      </div>
+
+      <!-- Main Content: Title -->
+      <main class="relative z-10 p-6">
+        <span
+          class="block text-lg font-semibold text-white leading-tight hover:underline"
+        >
+          {{ item?.fields?.title | ellipsis : 83 }}
+        </span>
+      </main>
+    </a>
+    }
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<section class="disqus-panel">
+  <div class="disqus-panel__header border-b-2">
+    <h2 class="disqus-panel__title">{{ title }}</h2>
+    <p class="disqus-panel__subtitle">Comments are powered by Disqus.</p>
+  </div>
+
+  @if (hasShortname) {
+    <div id="disqus_thread" class="disqus-panel__thread"></div>
+  } @else {
+    <div class="disqus-panel__empty">
+      Set <code>NG_APP_DISQUS_SHORTNAME</code> to enable comments.
+    </div>
+  }
+</section>

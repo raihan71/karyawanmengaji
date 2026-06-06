@@ -1,0 +1,42 @@
+<main>
+  <section class="bg-white">
+    <div class="max-w-screen-xl mx-auto p-5">
+      <div class="py-8 border-b">
+        <div class="container mx-auto">
+          <h1 class="text-4xl font-bold text-gray-800 mb-2 text-ellipsis">
+            {{ news?.fields?.title }}
+          </h1>
+          <p class="text-gray-600 text-ellipsis">
+            Diterbitkan pada {{ news?.sys?.createdAt | date: 'longDate' }}
+          </p>
+        </div>
+      </div>
+      <div class="bg-white py-8">
+        <div class="container mx-auto flex flex-col md:flex-row">
+          <div class="w-full md:w-3/4 px-1">
+            <img
+              [src]="news?.img"
+              [alt]="news?.fields?.title"
+              class="object-cover h-96 w-full mb-8 bg-zinc-500"
+            />
+            <div class="rich-text-content">
+              <div [innerHTML]="news?.fields?.desc | toHtml"></div>
+            </div>
+          </div>
+          <div class="w-full md:w-1/3 py-4 md:py-0 md:px-4">
+            <app-sidenews linkDetail="/news" title="Berita Terbaru" [items]="newses" />
+          </div>
+        </div>
+      </div>
+      <section class="bg-white md:border-t-2 py-8 antialiased">
+        <div class="mx-auto">
+          <app-disqus-embed
+            [pageUrl]="pageUrl"
+            [pageIdentifier]="pageIdentifier"
+            title="Join the discussion"
+          />
+        </div>
+      </section>
+    </div>
+  </section>
+</main>
