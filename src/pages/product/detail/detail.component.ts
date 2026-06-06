@@ -33,7 +33,7 @@ const CONFIG = environment.contentful_config.contentTypeIds;
   ],
 })
 export class DetailComponent implements OnInit {
-  items: Array<any> = [1, 2, 3, 4];
+  items: Array<any> = [];
   product: any = {};
   waMe: string = '//api.whatsapp.com/send?phone=';
   readonly pageUrl = typeof window !== 'undefined' ? window.location.href : '';
@@ -105,18 +105,11 @@ export class DetailComponent implements OnInit {
     this.cs.getEntry(params).subscribe({
       next: (entry: any) => {
         if (entry) {
-          if (entry && entry.image) {
-            const img = entry.image.sys.id;
-            this.cs.getSingleImg(img).then((img: string | undefined) => {
-              this.product = {
-                ...entry,
-                img,
-                open: false,
-              };
-            });
-          } else {
-            this.product = entry;
-          }
+          this.product = {
+            ...entry,
+            img: this.cs.assetUrl(entry?.image),
+            open: false,
+          };
           this.meta.updateTitle(`Program - ${entry.name}`);
         }
       },
@@ -129,33 +122,11 @@ export class DetailComponent implements OnInit {
     };
 
     this.cs.getEntries(params).subscribe((galleries: any[]) => {
-      if (galleries && galleries.length > 0) {
-        const galleryPromise = galleries.map((gallery: any) => {
-          if (gallery.fields && (gallery.fields.image || gallery.fields.image2)) {
-            const img1 = gallery.fields.image?.sys.id;
-            const img2 = gallery.fields.image2?.sys.id;
-
-            const img1Promise = img1 ? this.cs.getSingleImg(img1) : Promise.resolve(undefined);
-            const img2Promise = img2 ? this.cs.getSingleImg(img2) : Promise.resolve(undefined);
-
-            return Promise.all([img1Promise, img2Promise]).then(
-              (images: (string | undefined)[]) => {
-                const [img1Data, img2Data] = images;
-
-                return {
-                  ...gallery,
-                  img1: img1Data,
-                  img2: img2Data,
-                };
-              },
-            );
-          }
-          return gallery;
-        });
-        Promise.all(galleryPromise).then((newGallery) => {
-          this.items = newGallery;
-        });
-      }
+      this.items = (galleries || []).map((gallery) => ({
+        ...gallery,
+        img1: this.cs.assetUrl(gallery?.fields?.image),
+        img2: this.cs.assetUrl(gallery?.fields?.image2),
+      }));
     });
   }
 }

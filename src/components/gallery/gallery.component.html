@@ -1,10 +1,15 @@
-<div class="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-12 lg:px-6">
+<div class="gap-12 items-center section-container lg:grid lg:grid-cols-2">
   <div class="grid grid-cols-2 gap-4 md:gap-8 mt-8">
-      <img class="w-full rounded-lg" loading="lazy" [src]="img1" [alt]="title">
-      <img class="mt-4 w-full lg:mt-10 rounded-lg" loading="lazy" [src]="img2" [alt]="title">
+      <div class="media-frame aspect-[3/4]">
+        <img loading="lazy" decoding="async" [src]="img1" [alt]="title">
+      </div>
+      <div class="media-frame aspect-[3/4] mt-6 lg:mt-10">
+        <img loading="lazy" decoding="async" [src]="img2" [alt]="title">
+      </div>
   </div>
   <div class="font-light text-gray-500 sm:text-lg">
-      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900">{{title}}</h2>
-      <p class="mb-4">{{desc}}</p>
+      <p class="section-kicker mb-3">Galeri</p>
+      <h2 class="section-title mb-4">{{title}}</h2>
+      <p class="section-desc mb-4">{{desc}}</p>
   </div>
 </div>

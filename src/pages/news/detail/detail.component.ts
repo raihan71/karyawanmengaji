@@ -40,18 +40,14 @@ export class DetailComponent implements OnInit {
     this.cs.getPost(params).subscribe({
       next: (entry: any) => {
         if (entry) {
-          if (entry && entry.fields.image) {
-            const img = entry.fields.image.sys.id;
-            this.cs.getSingleImg(img).then((img: string | undefined) => {
-              this.meta.updateTag({ property: 'og:image', content: `${img}` });
-              this.news = {
-                ...entry,
-                img,
-              };
-            });
-          } else {
-            this.news = entry;
+          const img = this.cs.assetUrl(entry?.fields?.image);
+          if (img) {
+            this.meta.updateTag({ property: 'og:image', content: img });
           }
+          this.news = {
+            ...entry,
+            img,
+          };
           this.title.setTitle(`${entry.fields.title} - Berita`);
           this.meta.updateTag({
             name: 'description',
@@ -77,24 +73,10 @@ export class DetailComponent implements OnInit {
     };
 
     this.cs.getEntries(params).subscribe((articles: any[]) => {
-      if (articles && articles.length > 0) {
-        const articlePromise = articles.map((article: any) => {
-          if (article.fields && article.fields.image) {
-            const img = article.fields.image.sys.id;
-            return this.cs.getSingleImg(img).then((img: string | undefined) => {
-              return {
-                ...article,
-                img,
-              };
-            });
-          }
-          return article;
-        });
-
-        Promise.all(articlePromise).then((newArticle) => {
-          this.articles = newArticle;
-        });
-      }
+      this.articles = (articles || []).map((article) => ({
+        ...article,
+        img: this.cs.assetUrl(article?.fields?.image),
+      }));
     });
   }
 }

@@ -114,30 +114,20 @@ export class HomeComponent implements OnInit {
     this.fetchFaq();
   }
 
+  private withImage(entry: any, field = 'image', target = 'img') {
+    return {
+      ...entry,
+      [target]: this.cs.assetUrl(entry?.fields?.[field]),
+    };
+  }
+
   async fetchHeroes() {
     const params = {
       content_type: CONFIG.contentTypeIds.heroCarousel,
     };
 
     this.cs.getEntries(params).subscribe((heroes: any[]) => {
-      if (heroes && heroes.length > 0) {
-        const herosPromise = heroes.map((hero: any) => {
-          if (hero.fields && hero.fields.image) {
-            const img = hero.fields.image.sys.id;
-            return this.cs.getSingleImg(img).then((img: string | undefined) => {
-              return {
-                ...hero,
-                img,
-              };
-            });
-          }
-          return hero;
-        });
-
-        Promise.all(herosPromise).then((newHeros) => {
-          this.heros = newHeros;
-        });
-      }
+      this.heros = (heroes || []).map((hero) => this.withImage(hero));
     });
   }
 
@@ -147,40 +137,11 @@ export class HomeComponent implements OnInit {
     };
 
     this.cs.getEntries(params).subscribe((galleries: any[]) => {
-      if (galleries && galleries.length > 0) {
-        const galleryPromise = galleries.map((gallery: any) => {
-          if (
-            gallery.fields &&
-            (gallery.fields.image || gallery.fields.image2)
-          ) {
-            const img1 = gallery.fields.image?.sys.id;
-            const img2 = gallery.fields.image2?.sys.id;
-
-            const img1Promise = img1
-              ? this.cs.getSingleImg(img1)
-              : Promise.resolve(undefined);
-            const img2Promise = img2
-              ? this.cs.getSingleImg(img2)
-              : Promise.resolve(undefined);
-
-            return Promise.all([img1Promise, img2Promise]).then(
-              (images: (string | undefined)[]) => {
-                const [img1Data, img2Data] = images;
-
-                return {
-                  ...gallery,
-                  img1: img1Data,
-                  img2: img2Data,
-                };
-              }
-            );
-          }
-          return gallery;
-        });
-        Promise.all(galleryPromise).then((newGallery) => {
-          this.galleries = newGallery;
-        });
-      }
+      this.galleries = (galleries || []).map((gallery) => ({
+        ...gallery,
+        img1: this.cs.assetUrl(gallery?.fields?.image),
+        img2: this.cs.assetUrl(gallery?.fields?.image2),
+      }));
     });
   }
 
@@ -190,24 +151,7 @@ export class HomeComponent implements OnInit {
     };
 
     this.cs.getEntries(params).subscribe((clients: any[]) => {
-      if (clients && clients.length > 0) {
-        const clientPromise = clients.map((client: any) => {
-          if (client.fields && client.fields.logo) {
-            const img = client.fields.logo.sys.id;
-            return this.cs.getSingleImg(img).then((img: string | undefined) => {
-              return {
-                ...client,
-                img,
-              };
-            });
-          }
-          return client;
-        });
-
-        Promise.all(clientPromise).then((newClient) => {
-          this.clients = newClient;
-        });
-      }
+      this.clients = (clients || []).map((client) => this.withImage(client, 'logo'));
     });
   }
 
@@ -235,24 +179,7 @@ export class HomeComponent implements OnInit {
     };
 
     this.cs.getEntries(params).subscribe((programs: any[]) => {
-      if (programs && programs.length > 0) {
-        const programPromise = programs.map((program: any) => {
-          if (program.fields && program.fields.image) {
-            const img = program.fields.image.sys.id;
-            return this.cs.getSingleImg(img).then((img: string | undefined) => {
-              return {
-                ...program,
-                img,
-              };
-            });
-          }
-          return program;
-        });
-
-        Promise.all(programPromise).then((newProgram) => {
-          this.programs = newProgram;
-        });
-      }
+      this.programs = (programs || []).map((program) => this.withImage(program));
     });
   }
 

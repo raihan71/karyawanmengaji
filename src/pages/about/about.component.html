@@ -1,14 +1,19 @@
-<main>
-  <section class="bg-white">
-      <div class="gap-16 items-center py-6 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
+<main class="page-shell">
+  <section>
+      <div class="gap-12 items-center section-container lg:grid lg:grid-cols-2">
           <div class="font-light text-gray-500 sm:text-lg">
-              <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900">Profil QLC</h2>
-              <img class="object-scale-down h-14 w-14 mb-2" [src]="about.image || 'assets/img/qlc-logo.png'" alt="logo-qlc" />
-              <p class="mb-4">{{about.profile}}</p>
+              <p class="section-kicker mb-3">Tentang Kami</p>
+              <h2 class="section-title mb-5">Profil QLC</h2>
+              <img class="object-scale-down h-14 w-14 mb-4" [src]="about.image || 'assets/img/qlc-logo.png'" alt="logo-qlc" loading="lazy" decoding="async" />
+              <p class="section-desc mb-4">{{about.profile}}</p>
           </div>
-          <div class="grid grid-cols-2 gap-4 mt-8">
-              <img class="w-full rounded-lg" [src]="galleries[0].img1" [alt]="galleries[0].fields.title">
-              <img class="mt-4 w-full lg:mt-10 rounded-lg" [src]="galleries[0].img2" [alt]="galleries[0].fields.title">
+          <div class="grid grid-cols-2 gap-4 mt-8 lg:mt-0">
+              <div class="media-frame aspect-[3/4]">
+                <img [src]="galleries[0].img1" [alt]="galleries[0].fields.title" loading="lazy" decoding="async">
+              </div>
+              <div class="media-frame aspect-[3/4] mt-8 lg:mt-12">
+                <img [src]="galleries[0].img2" [alt]="galleries[0].fields.title" loading="lazy" decoding="async">
+              </div>
           </div>
       </div>
       <app-faq [questions]="questions" title="Visi & Misi" followUp="" />

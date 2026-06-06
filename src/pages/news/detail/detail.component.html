@@ -1,29 +1,32 @@
-<main>
-  <section class="bg-white">
+<main class="page-shell">
+  <section>
     <div class="max-w-screen-xl mx-auto p-5">
-      <div class="py-8 border-b">
+      <div class="py-10 border-b border-gray-200">
         <div class="container mx-auto">
-          <h1 class="text-4xl font-bold text-gray-800 mb-2 text-ellipsis">
+          <p class="section-kicker mb-3">Berita</p>
+          <h1 class="text-3xl md:text-5xl font-extrabold text-gray-950 mb-3 leading-tight">
             {{ news?.fields?.title }}
           </h1>
-          <p class="text-gray-600 text-ellipsis">
+          <p class="text-gray-600">
             Diterbitkan pada {{ news?.sys?.createdAt | date: 'longDate' }}
           </p>
         </div>
       </div>
-      <div class="bg-white py-8">
-        <div class="container mx-auto flex flex-col md:flex-row">
-          <div class="w-full md:w-3/4 px-1">
+      <div class="py-8">
+        <div class="container mx-auto flex flex-col md:flex-row gap-8">
+          <div class="w-full md:w-3/4">
             <img
               [src]="news?.img"
               [alt]="news?.fields?.title"
-              class="object-cover h-96 w-full mb-8 bg-zinc-500"
+              class="object-cover h-80 md:h-96 w-full mb-8 bg-zinc-200 rounded-lg"
+              loading="eager"
+              decoding="async"
             />
             <div class="rich-text-content">
               <div [innerHTML]="news?.fields?.desc | toHtml"></div>
             </div>
           </div>
-          <div class="w-full md:w-1/3 py-4 md:py-0 md:px-4">
+          <div class="w-full md:w-1/3 py-4 md:py-0">
             <app-sidenews linkDetail="/knowledge" title="Kajian Ilmu Terbaru" [items]="articles" />
           </div>
         </div>

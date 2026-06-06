@@ -1,16 +1,16 @@
 <div class="max-w-screen-xl mx-auto px-5">
-  <div class="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10">
+  <div class="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-6 md:gap-8">
     @for (item of items; track $index) {
     <a
       [routerLink]="[linkDetail, item?.sys?.id]"
-      class="relative h-72 w-full flex flex-col justify-end bg-cover bg-center rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105"
+      class="relative aspect-[5/4] w-full flex flex-col justify-end bg-cover bg-center rounded-lg shadow-lg overflow-hidden transition duration-200 hover:-translate-y-1 hover:shadow-xl"
       [style.background-image]="
         item.image ? 'url(' + item.image + ')' : 'url(' + img + ')'
       "
     >
       <!-- Gradient Overlay -->
       <div
-        class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"
+        class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"
       ></div>
 
       <!-- Top Section: Category and Date -->
@@ -18,7 +18,7 @@
         class="absolute top-0 left-0 right-0 flex justify-between items-center p-4"
       >
         <span
-          class="text-xs bg-green-600 text-white px-4 py-1 uppercase rounded-full hover:bg-white hover:text-green-600 transition duration-300"
+          class="text-xs bg-green-700 text-white px-3 py-1 uppercase rounded-full"
         >
           {{ item?.fields?.category }}
         </span>
@@ -42,9 +42,9 @@
       </div>
 
       <!-- Main Content: Title -->
-      <main class="relative z-10 p-6">
+      <main class="relative z-10 p-5">
         <span
-          class="block text-lg font-semibold text-white leading-tight hover:underline"
+          class="block text-lg font-bold text-white leading-tight hover:underline"
         >
           {{ item?.fields?.title | ellipsis : 83 }}
         </span>

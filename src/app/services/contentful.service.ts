@@ -1,12 +1,13 @@
 import { Injectable, NgZone } from '@angular/core';
 import { createClient } from 'contentful';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContentfulService {
+  private requestCache = new Map<string, Observable<any>>();
 
   private cdaClient = createClient({
     accessToken: import.meta.env['NG_APP_CKEY'],
@@ -38,25 +39,48 @@ export class ContentfulService {
     });
   }
 
+  private cacheRequest<T>(key: string, promiseFactory: () => Promise<T>): Observable<T> {
+    const cached = this.requestCache.get(key);
+    if (cached) {
+      return cached;
+    }
+
+    const request = this.fromContentful(promiseFactory()).pipe(shareReplay(1));
+    this.requestCache.set(key, request);
+    return request;
+  }
+
+  private cacheKey(prefix: string, value: any): string {
+    return `${prefix}:${JSON.stringify(value, Object.keys(value || {}).sort())}`;
+  }
+
+  assetUrl(asset: any): string | undefined {
+    const url = asset?.fields?.file?.url;
+    if (!url) {
+      return undefined;
+    }
+    return url.startsWith('//') ? `https:${url}` : url;
+  }
+
   getEntry(id:any) {
-    const promise = this.cdaClient.getEntry(id);
-    return this.fromContentful(promise).pipe(map(entry => entry.fields));
+    return this.cacheRequest(`entry:${id}`, () => this.cdaClient.getEntry(id))
+      .pipe(map((entry: any) => entry.fields));
   }
 
   getEntries(params:any) {
-    const promise = this.cdaClient.getEntries(params)
-    return this.fromContentful(promise).pipe(map(entries => entries.items));
+    return this.cacheRequest(this.cacheKey('entries', params), () => this.cdaClient.getEntries(params))
+      .pipe(map((entries: any) => entries.items));
   }
 
   getSingleImg(id:string) {
     return this.cdaClient.getAsset(id)
-      .then(asset => asset.fields.file?.url)
+      .then(asset => this.assetUrl(asset))
       .then(url => this.resolveInZone(url));
   }
 
   getPost(id:any) {
-    const promise = this.cdaClient.getEntry(id);
-    return this.fromContentful(promise).pipe(map(entry => entry));
+    return this.cacheRequest(`post:${id}`, () => this.cdaClient.getEntry(id))
+      .pipe(map(entry => entry));
   }
 
 }

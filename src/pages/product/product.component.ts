@@ -13,10 +13,11 @@ const CONFIG = environment.contentful_config.contentTypeIds;
   templateUrl: './product.component.html'
 })
 export class ProductComponent implements OnInit {
-  product:Array<any> = [1,2,3];
+  product:Array<any> = [];
   limit: number = 10;
   skip: number = 0;
   currentPage: number = 1;
+  hasNextPage: boolean = true;
 
   constructor(
     private cs: ContentfulService, private metaService: Meta, private titleService: Title
@@ -44,28 +45,18 @@ export class ProductComponent implements OnInit {
     };
 
     this.cs.getEntries(params).subscribe((programs:any[]) => {
-      if (programs && programs.length > 0) {
-        const programPromise = programs.map((program: any) => {
-          if (program.fields && program.fields.image) {
-            const img = program.fields.image.sys.id;
-            return this.cs.getSingleImg(img).then((img: string | undefined) => {
-              return {
-                ...program,
-                img
-              };
-            });
-          }
-          return program;
-        });
-
-        Promise.all(programPromise).then((newProgram) => {
-          this.product = newProgram;
-        });
-      }
+      this.product = (programs || []).map((program) => ({
+        ...program,
+        img: this.cs.assetUrl(program?.fields?.image),
+      }));
+      this.hasNextPage = this.product.length === this.limit;
     });
   }
 
   nextPage() {
+    if (!this.hasNextPage) {
+      return;
+    }
     this.skip += this.limit;
     this.currentPage++;
     this.fetchProduct();

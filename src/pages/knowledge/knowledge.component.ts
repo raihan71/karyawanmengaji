@@ -17,6 +17,7 @@ export class KnowledgeComponent {
   limit: number = 9;
   skip: number = 0;
   currentPage: number = 1;
+  hasNextPage: boolean = true;
 
   constructor(private cs:ContentfulService, private meta: Meta, private title: Title) {
     this.updateMeta();
@@ -42,28 +43,18 @@ export class KnowledgeComponent {
     };
 
     this.cs.getEntries(params).subscribe((news:any[]) => {
-      if (news && news.length > 0) {
-        const newsPromise = news.map((newse: any) => {
-          if (newse.fields && newse.fields.image) {
-            const image = newse.fields.image.sys.id;
-            return this.cs.getSingleImg(image).then((image: string | undefined) => {
-              return {
-                ...newse,
-                image
-              };
-            });
-          }
-          return newse;
-        });
-
-        Promise.all(newsPromise).then((newsNew) => {
-          this.news = newsNew;
-        });
-      }
+      this.news = (news || []).map((item) => ({
+        ...item,
+        image: this.cs.assetUrl(item?.fields?.image),
+      }));
+      this.hasNextPage = this.news.length === this.limit;
     });
   }
 
   nextPage() {
+    if (!this.hasNextPage) {
+      return;
+    }
     this.skip += this.limit;
     this.currentPage++;
     this.fetchNews();

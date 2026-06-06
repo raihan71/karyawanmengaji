@@ -53,9 +53,7 @@ export class AboutComponent implements OnInit {
       this.metaService.updateTag({ name: 'description', content: `${this.about.profile}` });
       this.metaService.updateTag({ property: 'og:description', content: `${this.about.profile}` });
       const { logo } = this.about;
-      this.cs.getSingleImg(logo.sys.id).then((image: any) => {
-        Object.assign(this.about, { image });
-      });
+      Object.assign(this.about, { image: this.cs.assetUrl(logo) });
       this.questions = [
         {
           fields: {
@@ -80,31 +78,11 @@ export class AboutComponent implements OnInit {
     };
 
     this.cs.getEntries(params).subscribe((galleries:any[]) => {
-      if (galleries && galleries.length > 0) {
-        const galleryPromise = galleries.map((gallery: any) => {
-          if (gallery.fields && (gallery.fields.image || gallery.fields.image2)) {
-            const img1 = gallery.fields.image?.sys.id;
-            const img2 = gallery.fields.image2?.sys.id;
-
-            const img1Promise = img1 ? this.cs.getSingleImg(img1) : Promise.resolve(undefined);
-            const img2Promise = img2 ? this.cs.getSingleImg(img2) : Promise.resolve(undefined);
-
-            return Promise.all([img1Promise, img2Promise]).then((images: (string | undefined)[]) => {
-              const [img1Data, img2Data] = images;
-
-              return {
-                ...gallery,
-                img1: img1Data,
-                img2: img2Data
-              };
-            });
-          }
-          return gallery;
-        });
-        Promise.all(galleryPromise).then((newGallery) => {
-          this.galleries = newGallery;
-        });
-      }
+      this.galleries = (galleries || []).map((gallery) => ({
+        ...gallery,
+        img1: this.cs.assetUrl(gallery?.fields?.image),
+        img2: this.cs.assetUrl(gallery?.fields?.image2),
+      }));
     });
   }
 }

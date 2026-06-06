@@ -43,9 +43,7 @@ export class AppComponent implements AfterViewInit {
     this._aboutMe.getData().subscribe((entry: aboutMe) => {
       this.about = entry;
       const { logo } = this.about;
-      this.cs.getSingleImg(logo.sys.id).then((image: any) => {
-        Object.assign(this.about, { image });
-      });
+      Object.assign(this.about, { image: this.cs.assetUrl(logo) });
     });
     this.cs.getEntries({ content_type: CONFIG.socials }).subscribe({
       next: (entries: Array<any>) => {
@@ -75,7 +73,7 @@ export class AppComponent implements AfterViewInit {
 
   private scrollPageALittle() {
     requestAnimationFrame(() => {
-      window.scrollTo(10, 10);
+      window.scrollTo(0, 0);
     });
   }
 
