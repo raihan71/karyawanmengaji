@@ -5,27 +5,27 @@
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc>https://karyawanmengaji.com/</loc>
+    <loc>https://www.karyawanmengaji.com/</loc>
     <lastmod>2023-10-T10:13:39+00:00</lastmod>
     <priority>1.00</priority>
   </url>
   <url>
-    <loc>https://karyawanmengaji.com/program</loc>
+    <loc>https://www.karyawanmengaji.com/program</loc>
     <lastmod>2023-10-T10:13:39+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://karyawanmengaji.com/about</loc>
+    <loc>https://www.karyawanmengaji.com/about</loc>
     <lastmod>2023-10-T10:13:39+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://karyawanmengaji.com/news</loc>
+    <loc>https://www.karyawanmengaji.com/news</loc>
     <lastmod>2023-10-T10:13:39+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://karyawanmengaji.com/knowledge</loc>
+    <loc>https://www.karyawanmengaji.com/knowledge</loc>
     <lastmod>2023-10-T10:13:39+00:00</lastmod>
     <priority>0.64</priority>
   </url>
