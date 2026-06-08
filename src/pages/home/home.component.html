@@ -1,24 +1,15 @@
 <main class="page-shell">
   <section>
-    <div
-      class="grid max-w-screen-xl px-4 py-12 mx-auto gap-10 lg:py-20 lg:grid-cols-12"
-    >
+    <div class="grid max-w-screen-xl px-4 py-12 mx-auto gap-10 lg:py-20 lg:grid-cols-12">
       <div class="mr-auto place-self-center lg:col-span-7">
-        <p class="section-kicker mb-3">Quran Learning Center</p>
-        <h1
-          class="max-w-2xl mb-5 text-4xl font-extrabold leading-tight text-gray-950 md:text-5xl"
-        >
+        <p class="section-kicker mb-3">Quuantum Learning Center</p>
+        <h1 class="max-w-2xl mb-5 text-4xl font-extrabold leading-tight text-gray-950 md:text-5xl">
           {{ aboutMe.judulHeroAtas }}
         </h1>
-        <p
-          class="max-w-2xl mb-7 text-gray-600 leading-8 md:text-lg"
-        >
+        <p class="max-w-2xl mb-7 text-gray-600 leading-8 md:text-lg">
           {{ aboutMe.subjudulHeroAtas }}
         </p>
-        <a
-          routerLink="/program"
-          class="btn-primary mr-3"
-        >
+        <a routerLink="/program" class="btn-primary mr-3">
           Mulai sekarang
           <svg
             class="w-5 h-5 ml-2 -mr-1"
@@ -33,30 +24,17 @@
             ></path>
           </svg>
         </a>
-        <a
-          routerLink="/"
-          class="btn-secondary"
-        >
-          Hubungi kami
-        </a>
+        <a routerLink="/" class="btn-secondary"> Hubungi kami </a>
       </div>
       <div class="hidden lg:mt-6 lg:col-span-5 lg:block">
         <div id="productPhotos" class="surface-card p-3">
-          <app-carousel
-            [items]="heros"
-            [customOptions]="photoOptions"
-            [type]="2"
-          />
+          <app-carousel [items]="heros" [customOptions]="photoOptions" [type]="2" />
         </div>
       </div>
     </div>
   </section>
   <section id="galleryPhotos" class="mb-8">
-    <app-carousel
-      [items]="galleries"
-      [customOptions]="galleryOptions"
-      [type]="1"
-    />
+    <app-carousel [items]="galleries" [customOptions]="galleryOptions" [type]="1" />
   </section>
   <app-clients [items]="clients" />
   <app-feature
